@@ -1,0 +1,5 @@
+To build and install:
+$ ./autogen.sh
+$ cd build/; ../configure
+$ make
+# make install
