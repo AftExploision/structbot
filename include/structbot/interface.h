@@ -17,24 +17,28 @@ typedef enum {
 	STR_ETT_END,
 } structbot_eventtype;
 
-//This is an event struct. It determines the priority of the event, the location, the function callbacks, and the type
+//This is an event struct. It determines the priority of the event, the location,
+//the function callbacks, and the type
 typedef struct _structbot_event_ {
+	//message that comes with the event, in the event of a message it will be
+	//the irc line, ect, ect
+	//The special event types (programstart, serverconnection) will only be
+	//allowed with priority 0.
+	char *message;
+	//Path to the plugin containing the event hook. This is incase the callback
+	//fails. In that case, we'd need to call the error decoding function
+	char *soPath;
+	//Function to call when event is being handled
+	int (* event_handler)(struct _structbot_event_ *e);
 	//Priority for deciding in which order to call the event hooks
 	size_t priority;
 	//Type of the event
 	structbot_eventtype event;
-	//Function to call when event is being handled
-	int (* event_handler)(struct _structbot_event_* e);
-	//message that comes with the event, in the event of a message it will be the irc line, ect, ect
-	//The special event types (programstart, serverconnection) will only be allowed with priority 0.
-	char* message;
-	//Path to the plugin containing the event hook. This is incase the callback fails. In that case, we'd need to call the error decoding function
-	char* soPath;
 } structbot_event;
 
 //Register an event hook
 //Returns 0 on success
 //Erros can be found in structbot/error.h
-int hook_event(structbot_event* e);
+int hook_event(structbot_event *e);
 
 #endif //_INTERFACE_H_STRUCTBOT

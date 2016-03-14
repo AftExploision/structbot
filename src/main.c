@@ -1,22 +1,51 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#include <argp.h>
 
 #include "structbot.h"
 #include "structbot/interface.h"
 #include "structbot/error.h"
 #include "priorityqueue.h"
+#include "settings.h"
 
-//List of priority queues. This is static length, equal to the number of event types there are
+//List of priority queues. This is static length, equal to the number of event
+//types there are
 structbot_priorityqueue *queues;
+
+//The program-wide options
+structbot_settings *sets;
 
 //Prototypes for static functions
 static void init_queues();
+static void add_start_hook();
 
-int main(void) {
+int main(int argc, char **argv) {
+	//Start the queues
 	init_queues();
+	
+	//We're using argp for getting the command line arguements
+	sets = malloc(sizeof(structbot_settings));
+	sets->pluginRelPath = NULL;
+	start_parsing(argc, argv, sets);
+	
+	if (sets->pluginRelPath == NULL) {
+		sets->pluginRelPath = malloc(sizeof(char) * (1 + strlen("plugins/")));
+		strcpy(sets->pluginRelPath, "plugins/");
+	}
+	
+	printf("%s %d %d\n", sets->pluginRelPath, sets->verbose, sets->debug);
+	
+	//Let's add a hook for the program start
+	//This one is internal, it'll handle initial connections
+	add_start_hook();
+	
 	return 0;
 }
 
-int register_event_as_hook(structbot_event* e, bool external) {
+//e is copied into the queue, no need to save it
+int register_event_as_hook(structbot_event *e, bool external) {
 	//If the event was external we should ensure the priority is not 0
 	if (external && e->priority == 0) {
 		e->priority = 1;
@@ -59,4 +88,8 @@ int register_event_as_hook(structbot_event* e, bool external) {
 //Set up the list of queues to be just as long as every event type we need
 static void init_queues() {
 	queues = malloc(sizeof(structbot_priorityqueue) * STR_ETT_NUM);
+}
+
+static void add_start_hook() {
+	
 }

@@ -1,0 +1,7 @@
+#ifndef MAJORVERSION
+#define MAJORVERSION "@MAJORVERSION@"
+#endif
+
+#ifndef MINORVERSION
+#define MINORVERSION "@MINORVERSION@"
+#endif

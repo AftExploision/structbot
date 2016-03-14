@@ -6,5 +6,11 @@ AM_INIT_AUTOMAKE
 LT_INIT
 
 AC_PROG_CC
+AC_PROG_LIBTOOL
 
-AC_OUTPUT(Makefile src/Makefile plugins/Makefile include/Makefile)
+AC_LANG_C
+
+AC_SUBST(MAJORVERSION, ["0"])
+AC_SUBST(MINORVERSION, ["1"])
+
+AC_OUTPUT(src/version.h Makefile src/Makefile plugins/Makefile include/Makefile)

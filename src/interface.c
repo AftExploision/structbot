@@ -5,7 +5,7 @@
 #include "structbot/interface.h"
 #include "structbot.h"
 
-int hook_event(structbot_event* e) {
+int hook_event(structbot_event *e) {
 	//Call the internal function to register this event into the priority queue
 	//This is an external call, they can't be priority 0
 	return register_event_as_hook(e, true);

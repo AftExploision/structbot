@@ -1,9 +1,5 @@
 Structbot is an event-driven irc bot framework
 TODO
-min-heaps for event priority
 connection to the server handler
-configuration files
-makefile
 plugin loading
 plugin API
-event structs
